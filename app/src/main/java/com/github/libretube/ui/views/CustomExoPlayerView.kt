@@ -70,6 +70,7 @@ import com.github.libretube.ui.sheets.ChaptersBottomSheet
 import com.github.libretube.ui.sheets.PlaybackOptionsSheet
 import com.github.libretube.ui.sheets.PlayingQueueSheet
 import com.github.libretube.ui.sheets.SleepTimerSheet
+import com.github.libretube.ui.tools.SleepTimer
 import com.github.libretube.util.PlayingQueue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -474,7 +475,14 @@ abstract class CustomExoPlayerView(
         },
         BottomSheetItem(
             context.getString(R.string.sleep_timer),
-            R.drawable.ic_sleep
+            R.drawable.ic_sleep,
+            getCurrent = {
+                if (SleepTimer.timeLeftMillis > 0) {
+                    context.getString(R.string.enabled)
+                } else {
+                    null
+                }
+            }
         ) {
             onSleepTimerClicked()
         }
