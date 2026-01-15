@@ -12,6 +12,7 @@ import androidx.core.view.isVisible
 import com.github.libretube.R
 import com.github.libretube.databinding.SleepTimerSheetBinding
 import com.github.libretube.ui.tools.SleepTimer
+import com.google.android.material.chip.Chip
 import com.github.libretube.util.PlayingQueue
 import com.github.libretube.util.PlayingQueueMode
 import com.google.android.material.chip.Chip
@@ -37,7 +38,6 @@ class SleepTimerSheet : ExpandedBottomSheet(R.layout.sleep_timer_sheet) {
             }
 
             SleepTimer.start(requireContext(), time)
-
             updateTimeLeftText()
         }
 
@@ -69,6 +69,9 @@ class SleepTimerSheet : ExpandedBottomSheet(R.layout.sleep_timer_sheet) {
                     binding.timeInput.apply {
                         setText(duration.toString())
                         clearFocus()
+
+                        SleepTimer.start(requireContext(), duration.toLong())
+                        updateTimeLeftText()
                     }
                 }
             }
