@@ -11,7 +11,7 @@ import com.github.libretube.db.obj.LocalPlaylist
 import com.github.libretube.extensions.parallelMap
 import com.github.libretube.obj.PipedImportPlaylist
 
-class LocalPlaylistsRepository: PlaylistRepository {
+class LocalPlaylistsRepository : PlaylistRepository {
     override suspend fun getPlaylist(playlistId: String): Playlist {
         val relation = DatabaseHolder.Database.localPlaylistsDao().getAll()
             .first { it.playlist.id.toString() == playlistId }
@@ -58,12 +58,10 @@ class LocalPlaylistsRepository: PlaylistRepository {
             DatabaseHolder.Database.localPlaylistsDao().addPlaylistVideo(localPlaylistItem)
 
             val playlist = localPlaylist.playlist
-            if (playlist.thumbnailUrl.isEmpty()) {
-                // set the new playlist thumbnail URL
-                localPlaylistItem.thumbnailUrl?.let {
-                    playlist.thumbnailUrl = it
-                    DatabaseHolder.Database.localPlaylistsDao().updatePlaylist(playlist)
-                }
+            // set the new playlist thumbnail URL
+            localPlaylistItem.thumbnailUrl?.let {
+                playlist.thumbnailUrl = it
+                DatabaseHolder.Database.localPlaylistsDao().updatePlaylist(playlist)
             }
         }
 
@@ -79,7 +77,10 @@ class LocalPlaylistsRepository: PlaylistRepository {
         return true
     }
 
-    override suspend fun changePlaylistDescription(playlistId: String, newDescription: String): Boolean {
+    override suspend fun changePlaylistDescription(
+        playlistId: String,
+        newDescription: String
+    ): Boolean {
         val playlist = DatabaseHolder.Database.localPlaylistsDao().getAll()
             .first { it.playlist.id.toString() == playlistId }.playlist
         playlist.description = newDescription
